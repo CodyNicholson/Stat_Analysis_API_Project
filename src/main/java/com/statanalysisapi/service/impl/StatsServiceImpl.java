@@ -48,10 +48,10 @@ public class StatsServiceImpl implements StatsService {
             return inputInts.get(0);
         }
 
-        int indexOfFirstMedianNumber = inputInts.size()/2 - 1;
+        int indexOfFirstMedianNumber = inputInts.size()/2;
 
         if (inputInts.size() % 2 == 0) {
-            int indexOfSecondMedianNumber = inputInts.size()/2;
+            int indexOfSecondMedianNumber = inputInts.size()/2 - 1;
             median = (double) (inputInts.get(indexOfFirstMedianNumber) + inputInts.get(indexOfSecondMedianNumber)) / 2;
         } else {
             median = inputInts.get(indexOfFirstMedianNumber);

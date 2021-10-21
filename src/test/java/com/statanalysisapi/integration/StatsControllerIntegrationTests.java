@@ -29,7 +29,7 @@ public class StatsControllerIntegrationTests {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void stats_validInput_200() {
+    void stats_validEvenNumInput_200() {
         List<String> inputInts = Arrays.asList("4", "2", "1", "3");
         BasicStatsRequestDto basicStatsRequestDto = new BasicStatsRequestDto(inputInts);
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -43,6 +43,24 @@ public class StatsControllerIntegrationTests {
         assertEquals("4", response.getBody().getMaximum());
         assertEquals("2.50", response.getBody().getMedian());
         assertEquals("2.50", response.getBody().getMean());
+        assertEquals("0", response.getBody().getErrors());
+    }
+
+    @Test
+    void stats_validOddNumInput_200() {
+        List<String> inputInts = Arrays.asList("10", "2", "3", "4", "5");
+        BasicStatsRequestDto basicStatsRequestDto = new BasicStatsRequestDto(inputInts);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-Type", "application/json");
+        HttpEntity inputRequest = new HttpEntity(basicStatsRequestDto, httpHeaders);
+        ResponseEntity<BasicStatsResponseDto> response = testRestTemplate.exchange("/stats", HttpMethod.POST, inputRequest, BasicStatsResponseDto.class);
+
+        assertNotNull(response.getBody());
+        assertEquals("5", response.getBody().getCount());
+        assertEquals("2", response.getBody().getMinimum());
+        assertEquals("10", response.getBody().getMaximum());
+        assertEquals("4.00", response.getBody().getMedian());
+        assertEquals("4.80", response.getBody().getMean());
         assertEquals("0", response.getBody().getErrors());
     }
 
